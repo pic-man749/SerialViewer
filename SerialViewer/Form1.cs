@@ -30,9 +30,6 @@ namespace SerialViewer {
 
             CbHandshake.Items.AddRange(Serial.getHandshake().ToArray());
             CbHandshake.SelectedIndex = 0;      // none 
-
-            // set DataRecv EventHandler
-            serial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialDataReceivedEventHandler);
         }
 
         // get COM port name and refresh ListBox
@@ -217,6 +214,22 @@ namespace SerialViewer {
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
             Properties.Settings.Default.Save();
+        }
+
+        private void Form1_Shown(object sender, EventArgs e) {
+            // set DataRecv EventHandler
+            serial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialDataReceivedEventHandler);
+
+            // window position setting
+            int needRestorePosition = 0;
+            foreach(Screen scr in Screen.AllScreens) {
+                if(scr.WorkingArea.Contains(this.Location.X, this.Location.Y)) {
+                    needRestorePosition++;
+                }
+            }
+            if(needRestorePosition == 0) {
+                this.Location = new System.Drawing.Point(100, 100);
+            }
         }
     }
 }
