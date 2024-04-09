@@ -58,7 +58,7 @@ namespace SerialViewer {
 
             // add com name that cannot got from Win32_SerialPort
             foreach(string port in Serial.GetPortNames()) {
-                if(!comPorts.ContainsKey(port)) {
+                if(!comPorts.Values.Contains(port)) {
                     comPorts.Add(port, port);
                 }
             }
