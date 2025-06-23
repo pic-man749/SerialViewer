@@ -50,10 +50,13 @@ namespace SerialViewer {
             // get COMs with device name
             ManagementClass mcW32SerPort = new ManagementClass("Win32_SerialPort");
             foreach(ManagementObject port in mcW32SerPort.GetInstances()) {
-                comPorts.Add(
-                    (string)port.GetPropertyValue("Caption"),   // key
-                    (string)port.GetPropertyValue("DeviceID")   // value
-                );
+                string key = (string)port.GetPropertyValue("Caption");
+                if(!comPorts.ContainsKey(key)) {
+                    comPorts.Add(
+                        key,
+                        (string)port.GetPropertyValue("DeviceID")   // value
+                    );
+                }
             }
 
             // add com name that cannot got from Win32_SerialPort
