@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace SerialViewer {
     public partial class Form1 : Form {
 
         private Serial serial = new Serial();
         private int hexDataStringIdx = 0;
+        private bool isReplaceCtrlCode = true;
 
         Thread threadProcRecvData;
 
@@ -238,6 +240,9 @@ namespace SerialViewer {
             threadProcRecvData.Name = "ProcRecvData";
             threadProcRecvData.Start();
 
+            // update flag
+            isReplaceCtrlCode = cbReplaceCtrlChar.Checked;
+
             // set DataRecv EventHandler
             serial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialDataReceivedEventHandler);
 
@@ -257,28 +262,68 @@ namespace SerialViewer {
 
             try {
 
+                string[] ctrlCharTable = { "NUL","SOH","STX","ETX","EOT","ENQ","ACK","BEL","BS","TAB","LF","VT","FF","CR","SO","SI",
+                                           "DLE","DC1","DC2","DC3","DC4","NAK","SYN","ETB","CAN","EM","SUB","ESC","FS","GS","RS","US" };
+                const int MAX_CCT = 32;
+
                 while(true) {
                     notifyEvent.WaitOne();
                     notifyEvent.Reset();
 
                     StringBuilder sbData = new StringBuilder();
 
+                    int maxTryCount = 100;
+
                     while(!serialRecvQueue.IsEmpty) {
                         string tmp;
                         serialRecvQueue.TryDequeue(out tmp);
                         sbData.Append(tmp);
+                        if(--maxTryCount < 0) {
+                            notifyEvent.Set();
+                            break;
+                        }
                     }
 
                     string data = sbData.ToString();
 
-                    addRecvLogTb(data);
                     addRecvLogBinTb(GetHexDataString(data));
+
+                    if(isReplaceCtrlCode) {
+                        string replaced = Regex.Replace(data, @"\p{Cc}", c => {
+                            
+                            StringBuilder ret = new StringBuilder();
+                            int numChar = (byte)c.Value[0];
+
+                            ret.Append(string.Format("<{0:X2}:", (byte)c.Value[0]));
+
+                            if(numChar < MAX_CCT) {    
+                                ret.Append(ctrlCharTable[numChar]);
+                            } else if(numChar == 0x7F) {    // DEL
+                                ret.Append("DEL");
+                            }
+                            ret.Append(">");
+
+                            if(numChar == 0x0A) {
+                                ret.Append(Environment.NewLine);
+                            }
+
+                            return ret.ToString();
+                            
+                        });
+                        addRecvLogTb(replaced);
+                    } else {
+                        addRecvLogTb(data);
+                    }
                 }
 
             }catch(Exception ex) {
                 Debug.WriteLine(ex.Message);
             }
 
+        }
+
+        private void cbReplaceCtrlChar_CheckStateChanged(object sender, EventArgs e) {
+            isReplaceCtrlCode = cbReplaceCtrlChar.Checked;
         }
     }
 }

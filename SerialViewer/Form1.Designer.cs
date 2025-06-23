@@ -50,6 +50,7 @@
             this.CbParity = new System.Windows.Forms.ComboBox();
             this.CbStopBit = new System.Windows.Forms.ComboBox();
             this.CbHandshake = new System.Windows.Forms.ComboBox();
+            this.cbReplaceCtrlChar = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -358,11 +359,27 @@
             this.CbHandshake.Size = new System.Drawing.Size(169, 20);
             this.CbHandshake.TabIndex = 33;
             // 
+            // cbReplaceCtrlChar
+            // 
+            this.cbReplaceCtrlChar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbReplaceCtrlChar.AutoSize = true;
+            this.cbReplaceCtrlChar.Checked = global::SerialViewer.Properties.Settings.Default.cbReplaceCtrlChar;
+            this.cbReplaceCtrlChar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbReplaceCtrlChar.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SerialViewer.Properties.Settings.Default, "cbReplaceCtrlChar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cbReplaceCtrlChar.Location = new System.Drawing.Point(12, 530);
+            this.cbReplaceCtrlChar.Name = "cbReplaceCtrlChar";
+            this.cbReplaceCtrlChar.Size = new System.Drawing.Size(126, 16);
+            this.cbReplaceCtrlChar.TabIndex = 34;
+            this.cbReplaceCtrlChar.Text = "replace control char";
+            this.cbReplaceCtrlChar.UseVisualStyleBackColor = true;
+            this.cbReplaceCtrlChar.CheckStateChanged += new System.EventHandler(this.cbReplaceCtrlChar_CheckStateChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.cbReplaceCtrlChar);
             this.Controls.Add(this.CbHandshake);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -438,6 +455,7 @@
         private System.Windows.Forms.ComboBox CbParity;
         private System.Windows.Forms.ComboBox CbStopBit;
         private System.Windows.Forms.ComboBox CbHandshake;
+        private System.Windows.Forms.CheckBox cbReplaceCtrlChar;
     }
 }
 
