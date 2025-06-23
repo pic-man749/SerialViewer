@@ -4,12 +4,20 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Diagnostics;
 
 namespace SerialViewer {
     public partial class Form1 : Form {
 
         private Serial serial = new Serial();
         private int hexDataStringIdx = 0;
+
+        Thread threadProcRecvData;
+
+        private ConcurrentQueue<string> serialRecvQueue = new ConcurrentQueue<string>();
+        private ManualResetEvent notifyEvent = new ManualResetEvent(false);
 
         public Form1() {
             InitializeComponent();
@@ -79,6 +87,11 @@ namespace SerialViewer {
                 serial.StopBits = (System.IO.Ports.StopBits)CbStopBit.SelectedIndex;
                 serial.Handshake = (System.IO.Ports.Handshake)CbHandshake.SelectedIndex;
 
+                // clear queue
+                while(!serialRecvQueue.IsEmpty) {
+                    serialRecvQueue.TryDequeue(out _);
+                }
+
                 try {
                     serial.Open();
                 } catch {
@@ -115,8 +128,8 @@ namespace SerialViewer {
 
         private void serialDataReceivedEventHandler(object sender, SerialDataReceivedEventArgs e) {
             string data = serial.ReadExisting();
-            addRecvLogTb(data);
-            addRecvLogBinTb(GetHexDataString(data));
+            serialRecvQueue.Enqueue(data);
+            notifyEvent.Set();
         }
 
         private void addSendLogTb(string str) {
@@ -177,25 +190,26 @@ namespace SerialViewer {
         // get payload hex string
         private string GetHexDataString(Byte[] data) {
 
-            string result = "";
+            StringBuilder result = new StringBuilder();
             int baseNum = this.hexDataStringIdx;
             if(0 == baseNum) {
-                result += "      | 00 01 02 03 04 05 06 07    08 09 0A 0B 0C 0D 0E 0F" + Environment.NewLine;
-                result += "------+---------------------------------------------------" + Environment.NewLine;
-                result += " 0000 | ";
+                result.AppendLine("      | 00 01 02 03 04 05 06 07    08 09 0A 0B 0C 0D 0E 0F");
+                result.AppendLine("------+---------------------------------------------------");
+                result.Append(" 0000 | ");
             }
             for(int i=0; i < data.Length; i++) {
                 // print data
-                result += string.Format("{0:X2} ", data[i]);
+                result.Append(string.Format("{0:X2} ", data[i]));
 
                 if((baseNum + i + 1) % 0x10 == 0) {
-                    result += String.Format(Environment.NewLine + " {0:X4} | ", baseNum+i+1);
+                    result.AppendLine();
+                    result.Append(String.Format(" {0:X4} | ", baseNum + i + 1));
                 } else if((baseNum + i + 1) % 0x8 == 0) {
-                    result += "   ";
+                    result.Append("   ");
                 }
             }
             this.hexDataStringIdx += data.Length;
-            return result;
+            return result.ToString();
         }
         // overload
         private string GetHexDataString(string str) {
@@ -214,9 +228,16 @@ namespace SerialViewer {
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
             Properties.Settings.Default.Save();
+            threadProcRecvData.Interrupt();
+            threadProcRecvData.Join();
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
+            // start recv data processing thread
+            threadProcRecvData = new Thread(new ThreadStart(ProcRecvData));
+            threadProcRecvData.Name = "ProcRecvData";
+            threadProcRecvData.Start();
+
             // set DataRecv EventHandler
             serial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialDataReceivedEventHandler);
 
@@ -230,6 +251,34 @@ namespace SerialViewer {
             if(needRestorePosition == 0) {
                 this.Location = new System.Drawing.Point(100, 100);
             }
+        }
+
+        private void ProcRecvData() {
+
+            try {
+
+                while(true) {
+                    notifyEvent.WaitOne();
+                    notifyEvent.Reset();
+
+                    StringBuilder sbData = new StringBuilder();
+
+                    while(!serialRecvQueue.IsEmpty) {
+                        string tmp;
+                        serialRecvQueue.TryDequeue(out tmp);
+                        sbData.Append(tmp);
+                    }
+
+                    string data = sbData.ToString();
+
+                    addRecvLogTb(data);
+                    addRecvLogBinTb(GetHexDataString(data));
+                }
+
+            }catch(Exception ex) {
+                Debug.WriteLine(ex.Message);
+            }
+
         }
     }
 }
