@@ -51,6 +51,10 @@
             this.CbStopBit = new System.Windows.Forms.ComboBox();
             this.CbHandshake = new System.Windows.Forms.ComboBox();
             this.cbReplaceCtrlChar = new System.Windows.Forms.CheckBox();
+            this.cbTextBoxWrap = new System.Windows.Forms.CheckBox();
+            this.tbarFontSize = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lFontSize = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +63,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbarFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // LbComList
@@ -76,7 +81,7 @@
             this.BtnConnect.Location = new System.Drawing.Point(329, 107);
             this.BtnConnect.Name = "BtnConnect";
             this.BtnConnect.Size = new System.Drawing.Size(206, 22);
-            this.BtnConnect.TabIndex = 3;
+            this.BtnConnect.TabIndex = 0;
             this.BtnConnect.Text = "connect";
             this.BtnConnect.UseVisualStyleBackColor = true;
             this.BtnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
@@ -87,7 +92,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TbSend.Location = new System.Drawing.Point(12, 135);
             this.TbSend.Name = "TbSend";
-            this.TbSend.Size = new System.Drawing.Size(523, 19);
+            this.TbSend.Size = new System.Drawing.Size(623, 19);
             this.TbSend.TabIndex = 20;
             this.TbSend.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TbSend_KeyPress);
             // 
@@ -95,7 +100,7 @@
             // 
             this.BtnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnSend.Enabled = false;
-            this.BtnSend.Location = new System.Drawing.Point(697, 133);
+            this.BtnSend.Location = new System.Drawing.Point(797, 133);
             this.BtnSend.Name = "BtnSend";
             this.BtnSend.Size = new System.Drawing.Size(75, 23);
             this.BtnSend.TabIndex = 24;
@@ -107,7 +112,7 @@
             // 
             this.CbAddCR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CbAddCR.AutoSize = true;
-            this.CbAddCR.Location = new System.Drawing.Point(603, 137);
+            this.CbAddCR.Location = new System.Drawing.Point(703, 137);
             this.CbAddCR.Name = "CbAddCR";
             this.CbAddCR.Size = new System.Drawing.Size(40, 16);
             this.CbAddCR.TabIndex = 22;
@@ -118,7 +123,7 @@
             // 
             this.CbAddLN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CbAddLN.AutoSize = true;
-            this.CbAddLN.Location = new System.Drawing.Point(649, 137);
+            this.CbAddLN.Location = new System.Drawing.Point(749, 137);
             this.CbAddLN.Name = "CbAddLN";
             this.CbAddLN.Size = new System.Drawing.Size(42, 16);
             this.CbAddLN.TabIndex = 23;
@@ -141,8 +146,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(760, 358);
-            this.splitContainer1.SplitterDistance = 139;
+            this.splitContainer1.Size = new System.Drawing.Size(860, 436);
+            this.splitContainer1.SplitterDistance = 168;
             this.splitContainer1.TabIndex = 0;
             // 
             // TbSendLog
@@ -155,8 +160,8 @@
             this.TbSendLog.Name = "TbSendLog";
             this.TbSendLog.ReadOnly = true;
             this.TbSendLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TbSendLog.Size = new System.Drawing.Size(760, 139);
-            this.TbSendLog.TabIndex = 0;
+            this.TbSendLog.Size = new System.Drawing.Size(860, 168);
+            this.TbSendLog.TabIndex = 1000;
             // 
             // splitContainer2
             // 
@@ -171,8 +176,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.TbRecvLogBin);
-            this.splitContainer2.Size = new System.Drawing.Size(760, 215);
-            this.splitContainer2.SplitterDistance = 370;
+            this.splitContainer2.Size = new System.Drawing.Size(860, 264);
+            this.splitContainer2.SplitterDistance = 418;
             this.splitContainer2.TabIndex = 0;
             // 
             // TbRecvLog
@@ -185,7 +190,7 @@
             this.TbRecvLog.Name = "TbRecvLog";
             this.TbRecvLog.ReadOnly = true;
             this.TbRecvLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TbRecvLog.Size = new System.Drawing.Size(370, 215);
+            this.TbRecvLog.Size = new System.Drawing.Size(418, 264);
             this.TbRecvLog.TabIndex = 1;
             // 
             // TbRecvLogBin
@@ -198,13 +203,13 @@
             this.TbRecvLogBin.Name = "TbRecvLogBin";
             this.TbRecvLogBin.ReadOnly = true;
             this.TbRecvLogBin.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TbRecvLogBin.Size = new System.Drawing.Size(386, 215);
+            this.TbRecvLogBin.Size = new System.Drawing.Size(438, 264);
             this.TbRecvLogBin.TabIndex = 1;
             // 
             // BtnResetAddress
             // 
             this.BtnResetAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnResetAddress.Location = new System.Drawing.Point(672, 526);
+            this.BtnResetAddress.Location = new System.Drawing.Point(772, 626);
             this.BtnResetAddress.Name = "BtnResetAddress";
             this.BtnResetAddress.Size = new System.Drawing.Size(100, 23);
             this.BtnResetAddress.TabIndex = 1;
@@ -216,7 +221,7 @@
             // 
             this.CbAsHex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CbAsHex.AutoSize = true;
-            this.CbAsHex.Location = new System.Drawing.Point(541, 137);
+            this.CbAsHex.Location = new System.Drawing.Point(641, 137);
             this.CbAsHex.Name = "CbAsHex";
             this.CbAsHex.Size = new System.Drawing.Size(56, 16);
             this.CbAsHex.TabIndex = 21;
@@ -226,7 +231,7 @@
             // BtnClearRecvTbR
             // 
             this.BtnClearRecvTbR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnClearRecvTbR.Location = new System.Drawing.Point(566, 526);
+            this.BtnClearRecvTbR.Location = new System.Drawing.Point(666, 626);
             this.BtnClearRecvTbR.Name = "BtnClearRecvTbR";
             this.BtnClearRecvTbR.Size = new System.Drawing.Size(100, 23);
             this.BtnClearRecvTbR.TabIndex = 7;
@@ -237,7 +242,7 @@
             // BtnClearRecvTbL
             // 
             this.BtnClearRecvTbL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnClearRecvTbL.Location = new System.Drawing.Point(460, 526);
+            this.BtnClearRecvTbL.Location = new System.Drawing.Point(560, 626);
             this.BtnClearRecvTbL.Name = "BtnClearRecvTbL";
             this.BtnClearRecvTbL.Size = new System.Drawing.Size(100, 23);
             this.BtnClearRecvTbL.TabIndex = 8;
@@ -248,7 +253,7 @@
             // BtnClearSendTb
             // 
             this.BtnClearSendTb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnClearSendTb.Location = new System.Drawing.Point(354, 526);
+            this.BtnClearSendTb.Location = new System.Drawing.Point(454, 626);
             this.BtnClearSendTb.Name = "BtnClearSendTb";
             this.BtnClearSendTb.Size = new System.Drawing.Size(100, 23);
             this.BtnClearSendTb.TabIndex = 9;
@@ -366,7 +371,7 @@
             this.cbReplaceCtrlChar.Checked = global::SerialViewer.Properties.Settings.Default.cbReplaceCtrlChar;
             this.cbReplaceCtrlChar.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbReplaceCtrlChar.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SerialViewer.Properties.Settings.Default, "cbReplaceCtrlChar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cbReplaceCtrlChar.Location = new System.Drawing.Point(12, 530);
+            this.cbReplaceCtrlChar.Location = new System.Drawing.Point(12, 604);
             this.cbReplaceCtrlChar.Name = "cbReplaceCtrlChar";
             this.cbReplaceCtrlChar.Size = new System.Drawing.Size(126, 16);
             this.cbReplaceCtrlChar.TabIndex = 34;
@@ -374,11 +379,63 @@
             this.cbReplaceCtrlChar.UseVisualStyleBackColor = true;
             this.cbReplaceCtrlChar.CheckStateChanged += new System.EventHandler(this.cbReplaceCtrlChar_CheckStateChanged);
             // 
+            // cbTextBoxWrap
+            // 
+            this.cbTextBoxWrap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbTextBoxWrap.AutoSize = true;
+            this.cbTextBoxWrap.Checked = global::SerialViewer.Properties.Settings.Default.cbTextBoxWrap;
+            this.cbTextBoxWrap.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbTextBoxWrap.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::SerialViewer.Properties.Settings.Default, "cbTextBoxWrap", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cbTextBoxWrap.Location = new System.Drawing.Point(12, 626);
+            this.cbTextBoxWrap.Name = "cbTextBoxWrap";
+            this.cbTextBoxWrap.Size = new System.Drawing.Size(97, 16);
+            this.cbTextBoxWrap.TabIndex = 35;
+            this.cbTextBoxWrap.Text = "word wrapping";
+            this.cbTextBoxWrap.UseVisualStyleBackColor = true;
+            this.cbTextBoxWrap.CheckedChanged += new System.EventHandler(this.cbTextBoxWrap_CheckedChanged);
+            // 
+            // tbarFontSize
+            // 
+            this.tbarFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbarFontSize.LargeChange = 3;
+            this.tbarFontSize.Location = new System.Drawing.Point(226, 604);
+            this.tbarFontSize.Maximum = 36;
+            this.tbarFontSize.Minimum = 6;
+            this.tbarFontSize.Name = "tbarFontSize";
+            this.tbarFontSize.Size = new System.Drawing.Size(204, 45);
+            this.tbarFontSize.TabIndex = 36;
+            this.tbarFontSize.Value = 9;
+            this.tbarFontSize.ValueChanged += new System.EventHandler(this.tbarFontSize_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(169, 605);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 12);
+            this.label6.TabIndex = 37;
+            this.label6.Text = "font size:";
+            // 
+            // lFontSize
+            // 
+            this.lFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lFontSize.AutoSize = true;
+            this.lFontSize.Location = new System.Drawing.Point(180, 627);
+            this.lFontSize.Name = "lFontSize";
+            this.lFontSize.Size = new System.Drawing.Size(11, 12);
+            this.lFontSize.TabIndex = 38;
+            this.lFontSize.Text = "9";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(884, 661);
+            this.Controls.Add(this.lFontSize);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.tbarFontSize);
+            this.Controls.Add(this.cbTextBoxWrap);
             this.Controls.Add(this.cbReplaceCtrlChar);
             this.Controls.Add(this.CbHandshake);
             this.Controls.Add(this.label5);
@@ -405,7 +462,7 @@
             this.Controls.Add(this.LbComList);
             this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::SerialViewer.Properties.Settings.Default, "SVLocation", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Location = global::SerialViewer.Properties.Settings.Default.SVLocation;
-            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.MinimumSize = new System.Drawing.Size(900, 600);
             this.Name = "Form1";
             this.Text = "SerialViewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -421,6 +478,7 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tbarFontSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -456,6 +514,10 @@
         private System.Windows.Forms.ComboBox CbStopBit;
         private System.Windows.Forms.ComboBox CbHandshake;
         private System.Windows.Forms.CheckBox cbReplaceCtrlChar;
+        private System.Windows.Forms.CheckBox cbTextBoxWrap;
+        private System.Windows.Forms.TrackBar tbarFontSize;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lFontSize;
     }
 }
 
