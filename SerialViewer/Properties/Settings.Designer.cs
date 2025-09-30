@@ -46,5 +46,17 @@ namespace SerialViewer.Properties {
                 this["cbReplaceCtrlChar"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool cbTextBoxWrap {
+            get {
+                return ((bool)(this["cbTextBoxWrap"]));
+            }
+            set {
+                this["cbTextBoxWrap"] = value;
+            }
+        }
     }
 }

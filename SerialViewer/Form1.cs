@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace SerialViewer {
     public partial class Form1 : Form {
@@ -324,6 +325,33 @@ namespace SerialViewer {
 
         private void cbReplaceCtrlChar_CheckStateChanged(object sender, EventArgs e) {
             isReplaceCtrlCode = cbReplaceCtrlChar.Checked;
+        }
+
+        private void cbTextBoxWrap_CheckedChanged(object sender, EventArgs e) {
+
+            bool isWordWrap = cbTextBoxWrap.Checked;
+            ScrollBars sb = (isWordWrap) ? ScrollBars.Vertical : ScrollBars.Both;
+
+            TbRecvLogBin.WordWrap = isWordWrap;
+            TbRecvLog.WordWrap = isWordWrap;
+            TbSendLog.WordWrap = isWordWrap;
+
+            TbRecvLogBin.ScrollBars = sb;
+            TbRecvLog.ScrollBars = sb;
+            TbSendLog.ScrollBars = sb;
+
+            if(isWordWrap) {
+
+            }
+        }
+
+        private void tbarFontSize_ValueChanged(object sender, EventArgs e) {
+            float fontSize = tbarFontSize.Value;
+            lFontSize.Text = fontSize.ToString();
+
+            TbRecvLogBin.Font = new Font(TbRecvLogBin.Font.FontFamily, fontSize);
+            TbRecvLog.Font = new Font(TbRecvLogBin.Font.FontFamily, fontSize);
+            TbSendLog.Font = new Font(TbRecvLogBin.Font.FontFamily, fontSize);
         }
     }
 }
