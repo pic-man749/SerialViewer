@@ -19,7 +19,7 @@ namespace SerialViewer {
 
         Thread threadProcRecvData;
 
-        private ConcurrentQueue<string> serialRecvQueue = new ConcurrentQueue<string>();
+        private ConcurrentQueue<Byte[]> serialRecvQueue = new ConcurrentQueue<Byte[]>();
         private ManualResetEvent notifyEvent = new ManualResetEvent(false);
 
         public Form1() {
@@ -130,8 +130,9 @@ namespace SerialViewer {
         }
 
         private void serialDataReceivedEventHandler(object sender, SerialDataReceivedEventArgs e) {
-            string data = serial.ReadExisting();
-            serialRecvQueue.Enqueue(data);
+            Byte[] payload = new byte[serial.BytesToRead];
+            serial.Read(payload, 0, payload.Length);
+            serialRecvQueue.Enqueue(payload);
             notifyEvent.Set();
         }
 
@@ -214,11 +215,6 @@ namespace SerialViewer {
             this.hexDataStringIdx += data.Length;
             return result.ToString();
         }
-        // overload
-        private string GetHexDataString(string str) {
-            Byte[] data = Encoding.UTF8.GetBytes(str);
-            return GetHexDataString(data);
-        }
 
         private void TbSend_KeyPress(object sender, KeyPressEventArgs e) {
             if(e.KeyChar == '\r') {
@@ -272,25 +268,32 @@ namespace SerialViewer {
                     notifyEvent.Reset();
 
                     StringBuilder sbData = new StringBuilder();
+                    Byte[] totalByteArray = new Byte[0];
 
                     int maxTryCount = 100;
 
                     while(!serialRecvQueue.IsEmpty) {
-                        string tmp;
-                        serialRecvQueue.TryDequeue(out tmp);
-                        sbData.Append(tmp);
+                        Byte[] popItem;
+                        serialRecvQueue.TryDequeue(out popItem);
+                        Byte[] tmp = new Byte[totalByteArray.Length + popItem.Length];
+                        Buffer.BlockCopy(totalByteArray, 0, tmp, 0, totalByteArray.Length);
+                        Buffer.BlockCopy(popItem, 0, tmp, totalByteArray.Length, popItem.Length);
+
+                        totalByteArray = tmp;
+
                         if(--maxTryCount < 0) {
                             notifyEvent.Set();
                             break;
                         }
                     }
 
-                    string data = sbData.ToString();
+                    // Byte[] to string
+                    string stringData = Encoding.UTF8.GetString(totalByteArray);
 
-                    addRecvLogBinTb(GetHexDataString(data));
+                    addRecvLogBinTb(GetHexDataString(totalByteArray));
 
                     if(isReplaceCtrlCode) {
-                        string replaced = Regex.Replace(data, @"\p{Cc}", c => {
+                        string replaced = Regex.Replace(stringData, @"\p{Cc}", c => {
                             
                             StringBuilder ret = new StringBuilder();
                             int numChar = (byte)c.Value[0];
@@ -313,7 +316,7 @@ namespace SerialViewer {
                         });
                         addRecvLogTb(replaced);
                     } else {
-                        addRecvLogTb(data);
+                        addRecvLogTb(stringData);
                     }
                 }
 
